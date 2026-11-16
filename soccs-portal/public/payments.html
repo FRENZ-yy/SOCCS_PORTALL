@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCCS Membership Fee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/z1/web-dashboard.css">
+    <link rel="stylesheet" href="css/z1-pages.css">
+    <script src="js/dialogs.js" defer></script>
+    <script src="js/subpage-nav.js" defer></script>
+    <script src="js/payments.js" defer></script>
+</head>
+<body class="portal-subpage">
+<div class="ambient" aria-hidden="true"></div>
+<div class="portal-page-shell">
+    <header class="dh subpage-dashboard-header" data-page-title="Membership Fee"></header>
+    <main class="subpage-main">
+            <section class="page" id="page-payments">
+                <div class="members-card">
+                    <div class="members-heading">
+                        <div>
+                            <span class="label">STUDENT BODY</span>
+                            <h3>Membership Fee</h3>
+                            <p>View student dues and recorded fee status.</p>
+                        </div>
+                        <div class="heading-actions">
+                            <button class="member-secondary-button" id="editMemberListButton" type="button" hidden>Edit member list</button>
+                            <button class="member-secondary-button" id="downloadLedgerButton" type="button" hidden>Download PDF</button>
+                            <button class="member-primary-button" id="recordPaymentButton" type="button" hidden>Record fee payment</button>
+                        </div>
+                    </div>
+
+                    <div id="financialOverview">
+                    <div class="member-summary-grid payment-summary-grid" aria-live="polite">
+                        <div class="member-summary"><span>Total membership funds</span><strong id="membershipFunds">₱0.00</strong></div>
+                        <div class="member-summary financial-only"><span>Collected in view</span><strong id="paymentCollected">₱0.00</strong></div>
+                        <div class="member-summary financial-only"><span>Outstanding</span><strong id="paymentOutstanding">₱0.00</strong></div>
+                    </div>
+
+                    <div class="course-chart financial-only" id="courseChart" aria-label="Collected and outstanding membership fees by section"></div>
+                    </div>
+
+                    <p class="member-status-message" id="paymentMessage" role="status" aria-live="polite"></p>
+
+                    <form class="member-filters" id="paymentFilterForm">
+                        <label class="member-search">Search members
+                            <input type="search" id="paymentSearch" placeholder="Name or student number">
+                        </label>
+                        <label>Section
+                            <select id="paymentSection"><option value="">All sections</option></select>
+                        </label>
+                        <label>Dues status
+                            <select id="paymentStatus"><option value="">All statuses</option></select>
+                        </label>
+                        <button class="member-secondary-button" type="submit">Filter</button>
+                    </form>
+
+                    <h4 class="section-label">Student membership ledger</h4>
+                    <div class="member-table-wrap">
+                        <table class="member-table" aria-label="Member dues ledger">
+                            <thead>
+                                <tr>
+                                    <th scope="col" aria-sort="ascending"><button class="ledger-sort" type="button" data-sort="full_name">Member</button></th>
+                                    <th scope="col"><button class="ledger-sort" type="button" data-sort="student_number">Student number</button></th>
+                                    <th scope="col"><button class="ledger-sort" type="button" data-sort="section">Section</button></th>
+                                    <th class="financial-only" scope="col"><button class="ledger-sort" type="button" data-sort="annual_dues">Due</button></th>
+                                    <th class="financial-only" scope="col"><button class="ledger-sort" type="button" data-sort="amount_paid">Paid</button></th>
+                                    <th class="financial-only" scope="col"><button class="ledger-sort" type="button" data-sort="balance">Balance</button></th>
+                                    <th scope="col"><button class="ledger-sort" type="button" data-sort="payment_status">Dues</button></th>
+                                </tr>
+                            </thead>
+                            <tbody id="duesTable"></tbody>
+                        </table>
+                    </div>
+                    <p class="member-empty-state" id="duesEmpty" hidden>No members match these filters.</p>
+                    <h4 class="section-label financial-only">Membership fee records</h4>
+                    <div class="member-table-wrap financial-only">
+                        <table class="member-table" aria-label="Payment records">
+                            <thead>
+                                <tr>
+                                    <th class="financial-only" scope="col">Date</th>
+                                    <th class="financial-only" scope="col">Member</th>
+                                    <th class="financial-only" scope="col">Amount</th>
+                                    <th class="financial-only" scope="col">Method</th>
+                                    <th class="financial-only" scope="col">Reference</th>
+                                    <th class="financial-only" scope="col">Status</th>
+                                    <th class="financial-only" scope="col">Receipt</th>
+                                </tr>
+                            </thead>
+                            <tbody class="financial-only" id="paymentTable"></tbody>
+                        </table>
+                    </div>
+                    <p class="member-empty-state financial-only" id="paymentEmpty" hidden>No payments recorded yet.</p>
+                </div>
+            </section>
+    </main>
+</div>
+<div class="subpage-drawer-scrim" id="subpageDrawerScrim"></div>
+<aside class="subpage-drawer" id="subpageDrawer" aria-label="Menu" aria-hidden="true">
+    <div class="subpage-drawer-heading">
+        <div class="subpage-drawer-brand">
+            <img src="assets/logo.png" alt="SOCCS logo">
+            <span>SOCCS</span>
+            <h2>Menu</h2>
+        </div>
+        <button type="button" class="subpage-drawer-close" id="subpageDrawerClose" aria-label="Close menu">&times;</button>
+    </div>
+    <nav aria-label="Portal pages">
+        <a class="subpage-drawer-link" data-drawer-page="dashboard" href="dashboard.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg> Dashboard
+        </a>
+        <a class="subpage-drawer-link" data-drawer-page="settings" href="settings.html" target="_blank" rel="noopener">
+            <img src="assets/settings-svgrepo-com.svg" alt=""> Settings
+        </a>
+        <a class="subpage-drawer-link" data-drawer-page="payments" href="payments.html" target="_blank" rel="noopener" aria-current="page">
+            <img src="assets/payment-method-cash-svgrepo-com.svg" alt=""> Membership Fee
+        </a>
+        <a class="subpage-drawer-link" data-drawer-page="event" href="dashboard.html?open=event" target="_blank" rel="noopener" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg> Event
+        </a>
+        <a class="subpage-drawer-link" data-drawer-page="chat" href="dashboard.html?open=chat" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg> Committee Chat
+        </a>
+        <a class="subpage-drawer-link" data-drawer-page="members" href="members.html" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2 20v-1a5.5 5.5 0 0 1 5.5-5.5h3A5.5 5.5 0 0 1 16 19v1"/><circle cx="17" cy="9" r="2.5"/><path d="M18 14a4 4 0 0 1 4 4v1"/></svg> Members
+        </a>
+    </nav>
+</aside>
+
+<dialog id="memberRosterDialog" aria-labelledby="memberRosterTitle">
+    <div class="member-form roster-dialog">
+        <div class="member-dialog-heading">
+            <div>
+                <span class="label">STUDENT BODY</span>
+                <h2 id="memberRosterTitle">Edit member list</h2>
+            </div>
+            <button class="member-close-button" id="closeMemberRosterButton" type="button" aria-label="Close dialog">&times;</button>
+        </div>
+        <section class="roster-editor-section">
+            <h3>Rename a section</h3>
+            <p class="member-roster-help">Change a section name for every student currently assigned to it.</p>
+            <form id="sectionRenameForm" class="roster-inline-form">
+                <label>Current section
+                    <select id="renameFromSection" required></select>
+                </label>
+                <label>New section name
+                    <input id="renameToSection" maxlength="30" placeholder="e.g. BSCS 2B" required>
+                </label>
+                <button class="member-secondary-button" type="submit">Rename section</button>
+            </form>
+            <p class="member-form-error" id="sectionRenameError" role="alert"></p>
+        </section>
+        <section class="roster-editor-section">
+            <h3>Edit students</h3>
+            <p class="member-roster-help">Update names, student numbers, and sections. Mark students who dropped out as Dropped to preserve their fee history.</p>
+            <div class="member-table-wrap roster-edit-table-wrap">
+                <table class="member-table" aria-label="Editable student roster">
+                    <thead><tr><th>Student number</th><th>Name</th><th>Section</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="rosterTable"></tbody>
+                </table>
+            </div>
+            <p class="member-empty-state" id="rosterEmpty" hidden>No students in the roster.</p>
+        </section>
+        <section class="roster-editor-section">
+            <h3>Add students in bulk</h3>
+            <p class="member-roster-help">Paste one student per line as <strong>student number, name</strong>. Tab-separated spreadsheet rows are supported. These students do not get portal accounts.</p>
+            <form id="memberRosterForm" class="member-form-grid roster-import-form">
+                <label class="member-span-2">Section
+                    <input id="rosterSection" name="section" maxlength="30" placeholder="e.g. BSCS 2B" required>
+                </label>
+                <label class="member-span-2">Student numbers and names
+                    <textarea id="rosterStudents" name="students" rows="7" placeholder="2024-001, Alex Santos&#10;2024-002, Bea Cruz" required></textarea>
+                </label>
+                <p class="member-form-error member-span-2" id="memberRosterError" role="alert"></p>
+                <div class="member-dialog-actions member-span-2">
+                    <button class="member-secondary-button" id="cancelMemberRosterButton" type="button">Close</button>
+                    <button class="member-primary-button" type="submit">Save student list</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</dialog>
+
+<dialog id="paymentDialog" aria-labelledby="paymentDialogTitle">
+    <form class="member-form" id="paymentForm">
+        <div class="member-dialog-heading">
+            <div>
+                <span class="label">MEMBERSHIP FEE</span>
+                <h2 id="paymentDialogTitle">Record membership fee</h2>
+            </div>
+            <button class="member-close-button" id="closePaymentButton" type="button" aria-label="Close dialog">&times;</button>
+        </div>
+        <div class="member-form-grid">
+            <label class="member-span-2">Member
+                <select id="paymentMember" name="member_id" required><option value="">Choose member</option></select>
+            </label>
+            <label>Amount
+                <input id="paymentAmount" name="amount" type="number" min="0.01" step="0.01" required>
+            </label>
+            <label>Date
+                <input id="paymentDate" name="date" type="date" required>
+            </label>
+            <label>Method
+                <select id="paymentMethod" name="method" required>
+                    <option value="Cash">Cash</option>
+                    <option value="GCash">GCash</option>
+                    <option value="Bank transfer">Bank transfer</option>
+                </select>
+            </label>
+            <p class="member-roster-help member-span-2">A unique numeric reference is generated automatically when payment is recorded.</p>
+            <label class="member-span-2">Received by
+                <input id="paymentReceivedBy" name="received_by" maxlength="80" required>
+            </label>
+            <label class="member-span-2">Note
+                <input id="paymentNote" name="note" maxlength="200" placeholder="Annual dues, event fee, or other reason">
+            </label>
+        </div>
+        <p class="member-form-error" id="paymentFormError" role="alert"></p>
+        <div class="member-dialog-actions">
+            <button class="member-secondary-button" id="cancelPaymentButton" type="button">Cancel</button>
+            <button class="member-primary-button" type="submit">Record payment</button>
+        </div>
+    </form>
+</dialog>
+
+<dialog id="receiptDialog" aria-labelledby="receiptTitle">
+    <div class="member-form">
+        <div class="member-dialog-heading">
+            <div>
+                <span class="label">MEMBERSHIP FEE RECEIPT</span>
+                <h2 id="receiptTitle">Received fee payment</h2>
+            </div>
+            <button class="member-close-button" id="closeReceiptButton" type="button" aria-label="Close dialog">&times;</button>
+        </div>
+        <div id="receiptBody" class="receipt-body"></div>
+        <div class="member-dialog-actions">
+            <button class="member-primary-button" id="doneReceiptButton" type="button">Close</button>
+        </div>
+    </div>
+</dialog>
+</body>
+</html>

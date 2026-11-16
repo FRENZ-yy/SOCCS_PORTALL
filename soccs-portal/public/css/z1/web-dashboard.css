@@ -1,0 +1,1158 @@
+/* SIDEBAR*/
+
+.dashboard-nav-icon {
+    display: inline-grid;
+    place-items: center;
+    font-size: 23px;
+    line-height: 1;
+}
+
+/* Bottom group: theme toggle + logout */
+.sidebar-bottom {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(128, 128, 128, 0.25);
+}
+
+.sidebar-bottom .theme-toggle,
+.sidebar-bottom .logout-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 0;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 12px;
+    background: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sidebar-bottom .theme-toggle:hover,
+.sidebar-bottom .logout-link:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+
+/*SHARED BUTTONS*/
+.member-primary-button,
+.member-secondary-button {
+    border: 0;
+    border-radius: 9px;
+    padding: 10px 15px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Primary (purple) */
+.member-primary-button {
+    color: #ffffff;
+    background: #7d3c9c;
+}
+
+.member-primary-button:hover {
+    background: #622d7c;
+}
+
+/* Secondary (light) */
+.member-secondary-button {
+    color: #54246d;
+    background: #f0e9f4;
+}
+
+.member-secondary-button:hover {
+    background: #e6d9ed;
+}
+
+
+/* MEMBERS PAGE*/
+
+/* ----- Card and heading ----- */
+.members-card {
+    min-width: 0;
+}
+
+.members-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.members-heading .label {
+    color: var(--primary);
+}
+
+.members-heading h3 {
+    margin: 4px 0 0;
+}
+
+.member-heading-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.member-view-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.member-view-tabs button {
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    background: transparent;
+    color: inherit;
+    border-radius: 999px;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+.member-view-tabs button.active {
+    background: rgba(168, 85, 247, 0.18);
+    border-color: rgba(168, 85, 247, 0.7);
+}
+
+.section-heading th {
+    background: rgba(168, 85, 247, 0.14);
+    color: inherit;
+    font-size: 13px;
+    letter-spacing: 0;
+    text-transform: none;
+    text-align: left;
+}
+
+/* ----- Summary boxes (Total, Active, Regular...) ----- */
+.member-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(90px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.member-summary {
+    padding: 12px 14px;
+    border: 1px solid rgba(128, 128, 128, 0.18);
+    border-radius: 12px;
+    background: var(--card);
+}
+
+.member-summary span,
+.member-summary strong {
+    display: block;
+}
+
+.member-summary span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.member-summary strong {
+    margin-top: 3px;
+    color: var(--primary);
+    font-size: 23px;
+}
+
+/* ----- Search and filters ----- */
+.member-filters {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px 0;
+}
+
+.member-filters label,
+.member-form-grid label {
+    display: grid;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.member-filters input,
+.member-filters select,
+.member-form input,
+.member-form select {
+    min-height: 38px;
+    min-width: 125px;
+    padding: 8px 10px;
+    border: 1px solid #e1d9e7;
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.member-search {
+    flex: 1 1 230px;
+}
+
+.member-search input {
+    width: 100%;
+}
+
+/* ----- Table ----- */
+.member-table-wrap {
+    overflow-x: auto;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 10px;
+}
+
+.member-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.member-table th {
+    padding: 12px 14px;
+    background: rgba(168, 85, 247, 0.06);
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+.member-table td {
+    padding: 12px 14px;
+    border-top: 1px solid rgba(128, 128, 128, 0.16);
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.member-name {
+    font-weight: 600;
+}
+
+.member-subtle {
+    display: block;
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* ----- Status pills (Active / Inactive / Alumni) ----- */
+.member-status-pill {
+    display: inline-block;
+    padding: 4px 9px;
+    border-radius: 20px;
+    background: #e7f6ed;
+    color: #277347;
+    font-size: 10px;
+}
+
+.member-status-pill.inactive {
+    background: #fff3dc;
+    color: #94620d;
+}
+
+.member-status-pill.alumni {
+    background: #ece9f0;
+    color: #6f6577;
+}
+
+/* ----- Row buttons (Edit / Delete) ----- */
+.member-row-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.member-row-actions button {
+    padding: 6px 9px;
+    border: 0;
+    border-radius: 7px;
+    background: #f0e9f4;
+    color: #54246d;
+    font-family: inherit;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.member-row-actions .member-delete-button {
+    background: #fff0ef;
+    color: #a63b34;
+}
+
+/* ----- Messages ----- */
+.member-empty-state {
+    padding: 30px;
+    color: var(--muted);
+    text-align: center;
+    font-size: 13px;
+}
+
+.member-status-message,
+.member-form-error {
+    min-height: 18px;
+    margin: 10px 0 0;
+    color: #287044;
+    font-size: 12px;
+}
+
+.member-status-message.error,
+.member-form-error {
+    color: #a63b34;
+}
+
+
+/* MEMBER DIALOG*/
+
+dialog {
+    width: min(660px, calc(100% - 28px));
+    max-height: 90vh;
+    padding: 0;
+    border: 0;
+    border-radius: 16px;
+    color: var(--text);
+    background: var(--card);
+    box-shadow: 0 18px 70px rgba(28, 15, 37, 0.3);
+}
+
+dialog::backdrop {
+    background: rgba(27, 14, 39, 0.58);
+}
+
+.member-form {
+    padding: 24px;
+}
+
+/* ----- Dialog heading ----- */
+.member-dialog-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.member-dialog-heading .label {
+    color: var(--primary);
+}
+
+.member-dialog-heading h2 {
+    margin: 4px 0 0;
+    font-size: 20px;
+}
+
+.member-close-button {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    color: var(--text);
+    background: rgba(128, 128, 128, 0.15);
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* ----- Form fields ----- */
+.member-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.member-form-grid label {
+    min-width: 0;
+}
+
+.member-form-grid input,
+.member-form-grid select {
+    width: 100%;
+    min-width: 0;
+}
+
+.member-form-grid .member-span-2 {
+    grid-column: span 2;
+}
+
+.member-type-field[hidden] {
+    display: none;
+}
+
+/* ----- Dialog buttons ----- */
+.member-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+
+/* PAYMENTS PAGE*/
+
+.payment-widget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.payment-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/*TASKS PAGE*/
+
+/* ----- Add-task form ----- */
+.task-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.task-form input {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 8px 14px;
+    border: 1px solid rgba(128, 128, 128, 0.22);
+    border-radius: 20px;
+    background: #f6eefb;
+    color: var(--text);
+    font: inherit;
+    outline: none;
+}
+
+.task-form input:focus {
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+.task-form button {
+    min-height: 44px;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 18px;
+    background: var(--gradient);
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.task-form button:hover {
+    opacity: 0.9;
+}
+
+/* ----- Task list items ----- */
+.task-item-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 18px;
+}
+
+.task-item {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;          /* one line per task */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task-item input {
+    margin-right: 10px;
+    accent-color: var(--primary);
+}
+
+/* Ticked task: grey and crossed out */
+.task-item input:checked + span {
+    color: var(--muted);
+    text-decoration: line-through;
+}
+
+.task-delete {
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.task-delete:hover {
+    color: var(--primary-2);
+}
+
+.task-empty {
+    padding: 10px;
+    color: var(--muted);
+    font-size: 14px;
+    text-align: center;
+}
+
+/* ----- Page layout: add-task + progress (left, equal size), list (right) ----- */
+#page-tasks:not([hidden]) {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr 1fr;            
+    grid-template-areas:
+        "form     list"
+        "progress list";
+    gap: 16px;
+    align-items: stretch;
+    min-height: calc(100vh - 130px);        
+}
+
+/* Shared card sizing */
+#page-tasks > .card {
+    padding: 20px;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: auto;
+}
+
+#page-tasks > .card h3 {
+    margin: 0 0 4px;
+    font-size: 20px;
+}
+
+#page-tasks > .card p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Top left: add-task card */
+#page-tasks > .card:first-child {
+    grid-area: form;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Bottom left: progress card (same size as add-task card) */
+#page-tasks > .progress-card {
+    grid-area: progress;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+}
+
+/* Right side: task list, full height, tasks start at the top */
+#page-tasks > #taskList {
+    grid-area: list;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 0;
+}
+
+.events-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 16px;
+    align-items: start;
+}
+
+.events-calendar-card {
+    grid-column: auto;
+    grid-row: auto;
+    width: 100%;
+    height: auto;
+    margin-top: 0;
+}
+
+.heading-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.section-label {
+    margin: 18px 0 8px;
+    color: var(--primary);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.payment-summary-grid,
+.event-summary-grid {
+    grid-template-columns: repeat(4, minmax(90px, 1fr));
+}
+
+.event-summary-grid {
+    grid-template-columns: repeat(3, minmax(90px, 1fr));
+}
+
+.member-form textarea {
+    width: 100%;
+    min-height: 84px;
+    padding: 8px 10px;
+    border: 1px solid #e1d9e7;
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--text);
+    font: inherit;
+    resize: vertical;
+}
+
+.calendar-note {
+    min-height: 18px;
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.day {
+    position: relative;
+}
+
+.day.has-event::after {
+    content: "";
+    position: absolute;
+    bottom: 1px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--primary-2);
+}
+
+.day.today.has-event::after,
+.day.selected.has-event::after {
+    background: #ffffff;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 4px 9px;
+    border-radius: 20px;
+    background: #f3e8ff;
+    color: #6b21a8;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-pill.paid,
+.status-pill.approved,
+.status-pill.done {
+    background: #e7f6ed;
+    color: #277347;
+}
+
+.status-pill.partial,
+.status-pill.pending,
+.status-pill.pending-approval {
+    background: #fff3dc;
+    color: #94620d;
+}
+
+.status-pill.unpaid,
+.status-pill.rejected,
+.status-pill.cancelled {
+    background: #fff0ef;
+    color: #a63b34;
+}
+
+.status-pill.waived {
+    background: #ece9f0;
+    color: #6f6577;
+}
+
+.attendance-list {
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid #e1d9e7;
+    border-radius: 8px;
+}
+
+.attendance-list legend {
+    padding: 0 4px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.attendance-list label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.attendance-list div {
+    max-height: 160px;
+    overflow: auto;
+}
+
+.receipt-body {
+    display: grid;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.receipt-body div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.18);
+}
+
+.activity-title {
+    font-weight: 600;
+}
+
+.activity-meta {
+    display: block;
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.settings-card {
+    margin-top: 16px;
+}
+
+.settings-card h3 {
+    margin-top: 4px;
+}
+
+.settings-form,
+.approval-grid,
+.course-editor {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.settings-form label,
+.course-add,
+.user-admin-row {
+    display: grid;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.settings-form input,
+.course-add input,
+.user-admin-row input,
+.user-admin-row select {
+    min-height: 38px;
+    padding: 8px 10px;
+    border: 1px solid #e1d9e7;
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--text);
+    font: inherit;
+    font-weight: 500;
+}
+
+.settings-span-2 {
+    grid-column: span 2;
+}
+
+.logo-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo-row img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: rgba(128, 128, 128, 0.08);
+}
+
+.logo-row small {
+    font-weight: 500;
+}
+
+.course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    grid-column: span 2;
+}
+
+.course-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px 6px 12px;
+    border-radius: 999px;
+    background: #f3e8ff;
+    color: #6b21a8;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.course-chip button {
+    border: 0;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+}
+
+.course-add {
+    grid-column: span 2;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+}
+
+.approval-grid fieldset {
+    margin: 0;
+    padding: 12px;
+    border: 1px solid #e1d9e7;
+    border-radius: 12px;
+}
+
+.approval-grid legend {
+    padding: 0 6px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.approval-grid label,
+.course-chip {
+    font-weight: 600;
+}
+
+.approval-grid label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+    color: var(--text);
+    font-size: 13px;
+}
+
+.settings-save-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.user-admin-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.user-admin-name {
+    display: grid;
+    gap: 2px;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.user-admin-name span {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.header .icon-btn {
+    position: relative;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: #e11d48;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+}
+
+.notif-badge[hidden] {
+    display: none;
+}
+
+.welcome-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.next-event-card {
+    display: grid;
+    gap: 4px;
+    min-width: min(100%, 280px);
+    padding: 16px 18px;
+    border-radius: 16px;
+    color: inherit;
+    text-decoration: none;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.16), rgba(236, 72, 153, 0.16));
+}
+
+.next-event-card strong {
+    font-size: 18px;
+}
+
+.next-event-card em {
+    color: var(--primary);
+    font-style: normal;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.course-chart {
+    display: grid;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.chart-row {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.chart-label {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.chart-bars {
+    display: grid;
+    gap: 6px;
+}
+
+.chart-bar {
+    min-width: 8px;
+    height: 22px;
+    border-radius: 999px;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 22px;
+    padding: 0 8px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.chart-bar.collected {
+    background: #7d3c9c;
+}
+
+.chart-bar.outstanding {
+    background: #e0897a;
+}
+
+.chart-legend {
+    display: flex;
+    gap: 14px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.chart-legend i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 6px;
+    border-radius: 50%;
+}
+
+.chart-legend .collected {
+    background: #7d3c9c;
+}
+
+.chart-legend .outstanding {
+    background: #e0897a;
+}
+
+.notification-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.notification-item {
+    display: grid;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    color: inherit;
+    text-decoration: none;
+    background: rgba(168, 85, 247, 0.08);
+}
+
+.notification-item strong {
+    font-size: 14px;
+}
+
+.notification-item span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.user-admin-row {
+    grid-template-columns: 1.2fr 1fr 1fr auto;
+    align-items: end;
+    padding-top: 12px;
+    border-top: 1px solid rgba(128, 128, 128, 0.16);
+}
+
+/* DARK THEME OVERRIDES*/
+
+/* ----- Sidebar ----- */
+body.dark-theme .nav-icon {
+    filter: brightness(0) invert(1);
+}
+
+body.dark-theme .sidebar-bottom .theme-toggle:hover,
+body.dark-theme .sidebar-bottom .logout-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ----- Members ----- */
+body.dark-theme .member-table th {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-theme .member-status-pill.inactive {
+    background: #493c25;
+    color: #f5d795;
+}
+
+body.dark-theme .member-status-pill.alumni {
+    background: #3a3045;
+    color: #c6b8d2;
+}
+
+body.dark-theme .member-row-actions button {
+    background: #3a2a4f;
+    color: var(--text);
+}
+
+body.dark-theme .member-row-actions .member-delete-button {
+    background: #4a2d32;
+    color: #ffb4ad;
+}
+
+/* ----- Tasks ----- */
+body.dark-theme .task-form input,
+body.dark-theme .member-form textarea,
+body.dark-theme .attendance-list {
+    background: #3a2a4f;
+    border-color: #4a3a5f;
+}
+
+body.dark-theme .status-pill.partial,
+body.dark-theme .status-pill.pending,
+body.dark-theme .status-pill.pending-approval {
+    background: #493c25;
+    color: #f5d795;
+}
+
+body.dark-theme .status-pill.waived {
+    background: #3a3045;
+    color: #c6b8d2;
+}
+
+
+@media (max-width: 980px) {
+    .events-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-summary-grid,
+    .event-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+
+    .member-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .members-heading {
+        align-items: flex-start;
+    }
+
+    .member-filters > label {
+        flex: 1 1 42%;
+    }
+
+    .member-search {
+        flex-basis: 100%;
+    }
+
+    .member-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .member-form-grid .member-span-2 {
+        grid-column: auto;
+    }
+
+    .settings-form,
+    .approval-grid,
+    .user-admin-row,
+    .course-add {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-span-2,
+    .course-list,
+    .course-add {
+        grid-column: auto;
+    }
+
+    .welcome-card,
+    .chart-row {
+        grid-template-columns: 1fr;
+        display: grid;
+    }
+}
+
+@media (max-width: 800px) {
+    #page-tasks:not([hidden]) {
+        grid-template-columns: 1fr;
+    }
+    #page-tasks > .card {
+        aspect-ratio: auto;
+    }
+}

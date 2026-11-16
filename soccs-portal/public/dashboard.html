@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOCCS Portal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<!-- body gets .exec-bg (admin background + executive layout) via JS when role === Executive -->
+<body id="appBody">
+<div class="ambient"></div>
+
+<!-- The UI keeps its original proportions while the background fills the window. -->
+<div class="stage"><div class="frame">
+
+  <!-- ── Header ── -->
+  <header id="dashboardHeader" class="dh">
+    <button id="drawerBtn" class="hamb" aria-label="Open menu" title="Menu">
+      <img src="assets/hamburgersettingicon.png" alt="Menu">
+    </button>
+
+    <div class="title-block">
+      <h1 id="brand">SOCCS PORTAL</h1>
+    </div>
+
+    <div class="dh-right">
+      <!-- Search (same pill search as the Login & Dashboard project) -->
+      <input type="search" class="header-search" id="headerSearch" placeholder="Search..." aria-label="Search tasks and events" autocomplete="off">
+
+      <!-- Settings (opens the Settings page) -->
+      <a href="settings.html" class="icon-btn" id="settingsLink" aria-label="Settings" title="Settings" target="_blank" rel="noopener">
+        <img src="assets/settings-svgrepo-com.svg" alt="">
+      </a>
+
+      <!-- Notification bell -->
+      <div id="bellWrap" class="relative hidden">
+        <button id="bellBtn" class="icon-btn" aria-label="Notifications" title="Notifications" aria-controls="bellOverlay" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+          <span id="bellDot" class="hidden"></span>
+        </button>
+      </div>
+
+      <!-- Profile button + dropdown (Switch Account / Log Out live here) -->
+      <div class="profile-wrap">
+        <button type="button" class="header-user" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+          <span class="hp-avatar" id="headerAvatar"><img src="assets/profile-circle-svgrepo-com.svg" alt=""></span>
+          <span id="who" class="hp-name"></span>
+        </button>
+        <div class="profile-menu hidden" id="profileMenu">
+          <div class="profile-info">
+            <strong id="profileDisplayName"></strong>
+            <span id="roleBadge" class="badge hidden"></span>
+          </div>
+          <button type="button" class="profile-item" id="switchAccountBtn">
+            <img src="assets/switch-user-icon-vector-removebg-preview.png" alt=""> Switch Account
+          </button>
+          <button type="button" class="profile-item danger" id="logout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg> Log Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div id="dashboardHeaderMount" hidden></div>
+
+  <!-- ══ Shared: welcome card, progress ring, progress bar, calendar ══ -->
+  <section id="eventName" class="panel welcome-card shared" aria-live="polite">
+    <div class="wc-left">
+      <h2 id="welcomeTitle"></h2>
+      <p id="eventCaption"></p>
+    </div>
+    <div class="wc-right">
+      <p id="upcomingEventReminder"></p>
+      <p id="cardTodayDate"></p>
+    </div>
+  </section>
+
+  <div class="ring-wrap shared">
+    <svg viewBox="0 0 100 100" role="img" aria-label="Task progress">
+      <defs>
+        <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#6d3bd8"/>
+          <stop offset="55%" stop-color="#a35cf0"/>
+          <stop offset="100%" stop-color="#e46cf7"/>
+        </linearGradient>
+        <radialGradient id="discGrad" cx="50%" cy="38%" r="70%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="100%" stop-color="#ece0fb"/>
+        </radialGradient>
+      </defs>
+      <circle cx="50" cy="50" r="49" fill="none" stroke="rgba(255,255,255,.45)" stroke-width=".7"/>
+      <g transform="rotate(-90 50 50)">
+        <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(240,230,255,.82)" stroke-width="12"/>
+        <circle id="ringfg" cx="50" cy="50" r="42" fill="none" stroke="url(#ringGrad)"
+          stroke-width="12" stroke-linecap="butt"
+          stroke-dasharray="263.9" stroke-dashoffset="263.9"
+          style="filter:drop-shadow(0 0 3px #d946ef)"/>
+        <!-- segment ticks -->
+        <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(52,18,112,.6)" stroke-width="12.2"
+          stroke-dasharray="1 12.195"/>
+      </g>
+      <circle cx="50" cy="50" r="34.5" fill="url(#discGrad)" stroke="rgba(150,90,230,.55)" stroke-width="1"/>
+    </svg>
+    <div class="ring-pct"><span id="pct">0%</span></div>
+  </div>
+
+  <div class="prog-wrap shared">
+    <div class="bar" role="progressbar" aria-label="Selected event task progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <i id="eventProgressBar" style="width:0%"></i>
+    </div>
+    <p id="eventProgressText">Task Progress: 0 of 0 complete</p>
+  </div>
+
+  <div class="panel cal-card shared">
+    <div class="cal-nav">
+      <button id="prev" aria-label="Previous month">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4 7 12l8 8"/></svg>
+      </button>
+      <h2 id="monthLabel"></h2>
+      <button id="next" aria-label="Next month">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 4 8 8-8 8"/></svg>
+      </button>
+    </div>
+    <div class="cal-dow"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+    <div id="calGrid" class="cal-grid"></div>
+  </div>
+
+  <!-- ══ OFFICER view ══ -->
+  <section id="officerView" class="hidden role-view">
+    <div class="panel tasks-card">
+      <div class="tasks-head">
+        <h2 id="taskTitle" class="card-title">Committee Tasks</h2>
+        <div class="com-prog">
+          <div class="bar slim" role="progressbar" aria-label="Committee task progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="comBar" style="width:0%"></i></div>
+          <span id="comBarText">0 / 0</span>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div id="tasks" class="tasks-grid scroll"></div>
+    </div>
+
+    <div id="memberTitle" hidden></div>
+    <ul id="members" hidden></ul>
+    <div class="panel activity-card">
+      <h2 class="card-sub">Recent Activity</h2>
+      <div id="activityFeed" class="scroll"></div>
+    </div>
+  </section>
+
+  <!-- ══ EXECUTIVE view ══ -->
+  <section id="execView" class="hidden role-view">
+    <div class="panel board-card">
+      <h2 class="card-sub">Committees &amp; Tasks</h2>
+      <div class="divider"></div>
+      <div id="execBoard" class="scroll"></div>
+    </div>
+
+    <div class="panel overall">
+      <h2 id="overallTitle" class="card-title">Overall Task Progress</h2>
+      <div class="bar stripe" role="progressbar" aria-label="Overall event progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="overallBar" style="width:0%"></i></div>
+      <div class="overall-row">
+        <p id="overallText"></p>
+        <span id="overallPct">0%</span>
+      </div>
+    </div>
+
+    <button id="breakdownBtn" class="breakdown">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="2.5"/><path d="M7 17v-5M12 17V7M17 17v-3"/></svg>
+      <span>Committee Progress<br>Breakdown</span>
+    </button>
+
+  </section>
+
+  <!-- ── Generic Modal ── -->
+  <div id="overlayMount" hidden></div>
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true">
+    <div class="modal-panel">
+      <div class="fm-head">
+        <img src="assets/logo.png" alt="" class="logo">
+        <h2 id="modalTitle" class="fm-modal-title"></h2>
+        <button id="modalClose" class="fm-close" aria-label="Close"><img src="assets/ekis.png" alt="Close"></button>
+      </div>
+      <div id="modalBody" class="fm-body scroll"></div>
+    </div>
+  </div>
+
+  <div id="switchAccountMount" hidden></div>
+  <div id="switchAccountOverlay" class="overlay contact-open" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="switchAccountTitle">
+    <section class="fm">
+      <header class="fm-head">
+        <img src="assets/logo.png" alt="" class="logo">
+        <span class="org">Student Organization of the College of Computer Studies(SOCCS)</span>
+        <button id="switchAccountClose" class="fm-close" type="button" aria-label="Close"><img src="assets/ekis.png" alt=""></button>
+      </header>
+      <div class="fm-body">
+        <h2 id="switchAccountTitle" class="fm-title grad-text">Switch Account</h2>
+        <div class="fm-content">
+          <p>Log out of this account and return to the login page?</p>
+          <p id="switchAccountError" role="alert" hidden></p>
+          <div class="switch-account-actions">
+            <button id="switchAccountCancel" class="btn" type="button">Cancel</button>
+            <button id="switchAccountConfirm" class="btn" type="button">Switch Account</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="deleteEventMount" hidden></div>
+  <div id="deleteEventOverlay" class="overlay contact-open" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="deleteEventTitle">
+    <section class="fm">
+      <header class="fm-head">
+        <img src="assets/logo.png" alt="" class="logo">
+        <span class="org">Student Organization of the College of Computer Studies(SOCCS)</span>
+        <button id="deleteEventClose" class="fm-close" type="button" aria-label="Close"><img src="assets/ekis.png" alt=""></button>
+      </header>
+      <div class="fm-body">
+        <h2 id="deleteEventTitle" class="fm-title grad-text">Delete Event</h2>
+        <div class="fm-content">
+          <p id="deleteEventMessage">Delete this event and all its committees and tasks?</p>
+          <p id="deleteEventError" role="alert" hidden></p>
+          <div class="switch-account-actions">
+            <button id="deleteEventCancel" class="btn" type="button">Cancel</button>
+            <button id="deleteEventConfirm" class="btn danger" type="button">Delete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── Bell notification panel ── -->
+  <div id="bellOverlay" class="bell-overlay hidden" role="dialog" aria-modal="true">
+    <div class="bell-head">
+      <h2 class="card-title">Notifications</h2>
+      <button id="markAllNotificationsRead" class="bell-mark-all" type="button">Mark all read</button>
+      <button id="bellClose" class="fm-close" aria-label="Close"><img src="assets/ekis.png" alt="Close"></button>
+    </div>
+    <div class="divider"></div>
+    <div id="bellList"></div>
+  </div>
+    <div id="bellOverlayMount" hidden></div>
+
+    </div>
+
+  </div>
+
+  <!-- ── Executive Event card ── -->
+  <div id="eventOverlay" class="event-overlay" aria-hidden="true">
+    <div id="eventPageContent" class="event-page-content">
+      <header class="event-page-title">
+        <div>
+          <h2 id="eventCardTitle">Event</h2>
+          <p id="eventPageSubtitle">Manage events, committees, assignments, and event dates.</p>
+        </div>
+        <button id="eventCardClose" class="chat-card-close" type="button" aria-label="Close Event">&times;</button>
+      </header>
+      <section class="panel event-actions-card">
+        <h2 class="card-sub">Event Management</h2>
+        <div class="event-actions">
+          <button class="act-btn" data-act="addEvent">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            Edit Events
+          </button>
+          <button class="act-btn" data-act="addTask">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="17" rx="2"/><path d="M9 2.5h6v3H9z"/><path d="m8.5 13 2.5 2.5 4.5-5"/></svg>
+            Set Committee Tasks
+          </button>
+          <button class="act-btn" data-act="assign">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21v-1a6 6 0 0 1 6-6h2"/><path d="m15 18 2.5 2.5L22 15"/></svg>
+            Assign Officer
+          </button>
+          <button class="act-btn" data-act="manageCommittees">Committees</button>
+          <button class="act-btn event-record-btn" data-act="eventRecord">Event Record</button>
+        </div>
+      </section>
+      <section class="panel event-overall-card">
+        <div style="flex:1;min-width:0;display:flex;align-items:center;gap:calc(var(--u)*30)">
+          <div id="eventRingWrap" class="event-ring-wrap" role="progressbar" aria-label="Overall event task progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <linearGradient id="eventRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6d3bd8"/>
+                <stop offset="55%" stop-color="#a35cf0"/>
+                <stop offset="100%" stop-color="#e46cf7"/>
+              </linearGradient>
+              <radialGradient id="eventDiscGrad" cx="50%" cy="38%" r="70%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#ece0fb"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="50" r="49" fill="none" stroke="rgba(255,255,255,.45)" stroke-width=".7"/>
+            <g transform="rotate(-90 50 50)">
+              <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(240,230,255,.82)" stroke-width="12"/>
+              <circle id="eventRingFg" cx="50" cy="50" r="42" fill="none" stroke="url(#eventRingGrad)"
+                stroke-width="12" stroke-linecap="butt" stroke-dasharray="263.9" stroke-dashoffset="263.9"
+                style="filter:drop-shadow(0 0 3px #d946ef)"/>
+              <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(52,18,112,.6)" stroke-width="12.2"
+                stroke-dasharray="1 12.195"/>
+            </g>
+            <circle cx="50" cy="50" r="34.5" fill="url(#eventDiscGrad)" stroke="rgba(150,90,230,.55)" stroke-width="1"/>
+          </svg>
+          <span id="eventRingPct">0%</span>
+        </div>
+          <div class="event-progress-details">
+          <div style="display:flex;flex-direction:column;gap:calc(var(--u)*12);min-width:0">
+            <h2 class="card-title" style="text-align:left;font-size:calc(var(--u)*32);font-weight:600;text-shadow:none;white-space:normal">Overall Task Progress</h2>
+            <div style="max-width:80%">
+              <div class="bar stripe" role="progressbar" aria-label="Overall event progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <i id="eventOverallBar" style="width:0%"></i>
+              </div>
+            </div>
+            <div class="event-overall-row">
+              <p id="eventOverallText">Create an event to get started.</p>
+              <span id="eventOverallPct" hidden>0%</span>
+            </div>
+            <button id="eventBreakdownBtn" class="event-breakdown-btn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="2.5"/><path d="M7 17v-5M12 17V7M17 17v-3"/></svg>
+              Committee Progress Breakdown
+            </button>
+          </div>
+        </div>
+        </div>
+        <div style="width:calc(var(--u)*2);align-self:stretch;background:rgba(222,196,255,.35);border-radius:calc(var(--u)*2);flex:none"></div>
+        <div style="flex:1;min-width:0;display:flex;gap:calc(var(--u)*20);align-items:flex-start;padding-left:calc(var(--u)*20)">
+          <span id="eventCardName" class="grad-text" style="flex:1;min-width:0;font-size:calc(var(--u)*70);font-weight:800;letter-spacing:-.02em;line-height:1.1;word-break:break-word;white-space:normal"></span>
+          <p id="eventCardDesc" style="flex:1;min-width:0;margin:calc(var(--u)*8) 0 0;color:var(--mute);font-size:calc(var(--u)*28);line-height:1.4;word-break:break-word;white-space:normal"></p>
+        </div>
+      </section>
+      <section class="panel event-calendar cal-card" aria-label="Event calendar">
+        <h2 class="card-sub">Event Calendar</h2>
+          <div class="cal-nav">
+            <button id="eventPrev" aria-label="Previous month">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4 7 12l8 8"/></svg>
+            </button>
+            <h2 id="eventMonthLabel"></h2>
+            <button id="eventNext" aria-label="Next month">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 4 8 8-8 8"/></svg>
+            </button>
+          </div>
+          <div class="cal-dow"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+          <div id="eventCalGrid" class="cal-grid"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ── Committee Chat card ── -->
+  <div id="chatOverlay" class="chat-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="chatCardTitle">
+    <section class="chat-card">
+      <header class="chat-card-head">
+        <div class="chat-card-heading">
+          <span class="chat-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg>
+          </span>
+          <div>
+            <h2 id="chatCardTitle">Committee Chat</h2>
+            <p id="chatCardSubtitle">Your committee conversation</p>
+          </div>
+        </div>
+        <label id="chatCommitteePickerWrap" class="chat-committee-picker">
+          Committee
+          <select id="chatCardComSel" class="field" aria-label="Select committee"></select>
+        </label>
+        <button id="chatMembersToggle" class="chat-card-close" type="button" aria-label="View members" title="Committee Members" style="width:auto;padding:0 10px;font-size:13px;border-radius:8px;">Members</button>
+        <button id="chatCardClose" class="chat-card-close" type="button" aria-label="Close chat">&times;</button>
+      </header>
+      <div id="chatCardFeed" class="chat-card-feed scroll" aria-live="polite"></div>
+      <div id="chatMembersPanel" class="chat-members-panel scroll" hidden>
+        <p class="chat-members-title">Committee Members</p>
+        <ul id="chatMembersList"></ul>
+      </div>
+      <form id="chatCardForm" class="chat-card-form">
+        <input id="chatCardInput" class="field" placeholder="Write a message…" autocomplete="off" maxlength="1000" aria-label="Message">
+        <button type="submit" class="btn">Send</button>
+      </form>
+    </section>
+  </div>
+
+  <!-- ── Drawer scrim ── -->
+  <div id="drawerScrim" class="drawer-scrim"></div>
+
+  <!-- ── Settings Drawer ── -->
+  <aside id="drawer" class="drawer" aria-label="Menu">
+    <div class="drawer-header">
+      <div class="drawer-top">
+        <div class="drawer-heading">
+          <div class="header-brand">
+            <img src="assets/logo.png" alt="SOCCS logo" class="logo-img">
+            <p class="drawer-org-name">SOCCS</p>
+          </div>
+          <h2 class="card-title">Menu</h2>
+        </div>
+        <button id="drawerClose" class="fm-close" aria-label="Close menu"><img src="assets/ekis.png" alt="Close"></button>
+      </div>
+    </div>
+
+    <nav id="settingsMenu" style="flex:1;display:flex;flex-direction:column;padding:6px 0 20px">
+      <a class="settings-item" href="dashboard.html" aria-current="page">
+        <span class="settings-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span> Dashboard
+      </a>
+      <button class="settings-item" data-settings="settings">
+        <span class="settings-icon"><img src="assets/settings-svgrepo-com.svg" alt=""></span> Settings
+      </button>
+      <button class="settings-item" data-settings="payments">
+        <span class="settings-icon"><img src="assets/payment-method-cash-svgrepo-com.svg" alt=""></span> Membership Fee
+      </button>
+      <button class="settings-item" id="eventMenuItem" data-settings="event" hidden>
+        <span class="settings-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg></span> Event
+      </button>
+      <button class="settings-item" data-settings="chat">
+        <span class="settings-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg></span> Committee Chat
+      </button>
+      <button class="settings-item" data-settings="members">
+        <span class="settings-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2 20v-1a5.5 5.5 0 0 1 5.5-5.5h3A5.5 5.5 0 0 1 16 19v1"/><circle cx="17" cy="9" r="2.5"/><path d="M18 14a4 4 0 0 1 4 4v1"/></svg></span> Members
+      </button>
+    </nav>
+  </aside>
+
+<script src="js/dialogs.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

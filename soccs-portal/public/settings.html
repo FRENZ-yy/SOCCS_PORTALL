@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCCS Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/z1/web-dashboard.css">
+    <link rel="stylesheet" href="css/z1-pages.css">
+    <script src="js/dialogs.js" defer></script>
+    <script src="js/subpage-nav.js" defer></script>
+    <script src="js/settings.js" defer></script>
+</head>
+<body class="portal-subpage">
+<div class="ambient" aria-hidden="true"></div>
+<div class="portal-page-shell">
+    <header class="dh subpage-dashboard-header" data-page-title="Settings"></header>
+    <main class="subpage-main">
+            <section class="page" id="page-settings">
+                <p class="member-status-message" id="settingsMessage" role="status" aria-live="polite"></p>
+
+                <div class="settings-card">
+                    <span class="label">ACCOUNT</span>
+                    <h3>My account</h3>
+                    <p>Change the name and Gmail shown in the portal, or set a new password.</p>
+                    <form id="accountForm" class="settings-form">
+                        <div class="settings-avatar-row">
+                            <div class="avatar-preview" id="avatarPreview" title="Click to change photo"></div>
+                            <label>Profile photo
+                                <input id="avatarFile" type="file" accept="image/*">
+                                <small>PNG or JPG, up to 1.5 MB.</small>
+                            </label>
+                        </div>
+                        <label>Full name
+                            <input id="accountName" name="full_name" maxlength="100" pattern="[A-Za-z]+(?: [A-Za-z]+)*" title="Use letters only, with spaces between names." required>
+                        </label>
+                        <label>New password
+                            <input id="accountNewPassword" name="new_password" type="password" minlength="8" autocomplete="new-password" placeholder="Leave blank to keep the current one (8+ characters)">
+                        </label>
+                        <label>Gmail / email
+                            <input id="accountEmail" name="email" type="email" maxlength="120" required autocomplete="email" title="New Gmail addresses must use letters only before @gmail.com.">
+                        </label>
+                        <label>Confirm new password
+                            <input id="accountConfirmPassword" name="confirm_password" type="password" minlength="8" autocomplete="new-password">
+                        </label>
+                        <label>Current password
+                            <input id="accountCurrentPassword" name="old_password" type="password" autocomplete="current-password" placeholder="Only needed when changing password">
+                        </label>
+                        <button class="member-primary-button" type="submit">Save account</button>
+                        <p class="member-form-error" id="accountError" role="alert"></p>
+                    </form>
+                </div>
+
+                <div class="settings-card" id="backupCard" hidden>
+                    <span class="label">DATABASE</span>
+                    <h3>SQL backup</h3>
+                    <p>Download a restore-ready backup of the portal database. The file contains account and payment data; store it securely.</p>
+                    <a class="member-secondary-button" id="downloadBackupButton" href="/api/exec/backup.sql">Download SQL backup</a>
+                </div>
+
+                <div class="settings-card">
+                    <span class="label">APPEARANCE</span>
+                    <h3>Dark mode / Light mode</h3>
+                    <p>Pick how the portal looks. The dashboard, Membership Fee, and Members pages use this choice.</p>
+                    <div class="theme-row">
+                        <img id="themeImage" src="assets/moon-cloud-svgrepo-com.svg" alt="">
+                        <button type="button" class="member-secondary-button" id="themeToggle" aria-pressed="false">
+                            <span id="themeLabel">Switch to Light Mode</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+    </main>
+</div>
+<div class="subpage-drawer-scrim" id="subpageDrawerScrim"></div>
+<aside class="subpage-drawer" id="subpageDrawer" aria-label="Menu" aria-hidden="true">
+    <div class="subpage-drawer-heading">
+        <div class="subpage-drawer-brand">
+            <img src="assets/logo.png" alt="SOCCS logo">
+            <span>SOCCS</span>
+            <h2>Menu</h2>
+        </div>
+        <button type="button" class="subpage-drawer-close" id="subpageDrawerClose" aria-label="Close menu">&times;</button>
+    </div>
+    <nav aria-label="Portal pages">
+        <a class="subpage-drawer-link" data-drawer-page="dashboard" href="dashboard.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg> Dashboard
+        </a>
+        <a class="subpage-drawer-link" data-drawer-page="settings" href="settings.html" target="_blank" rel="noopener" aria-current="page">
+            <img src="assets/settings-svgrepo-com.svg" alt=""> Settings
+        </a>
+        <a class="subpage-drawer-link" data-drawer-page="payments" href="payments.html" target="_blank" rel="noopener">
+            <img src="assets/payment-method-cash-svgrepo-com.svg" alt=""> Membership Fee
+        </a>
+        <a class="subpage-drawer-link" data-drawer-page="event" href="dashboard.html?open=event" target="_blank" rel="noopener" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg> Event
+        </a>
+        <a class="subpage-drawer-link" data-drawer-page="chat" href="dashboard.html?open=chat" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg> Committee Chat
+        </a>
+        <a class="subpage-drawer-link" data-drawer-page="members" href="members.html" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2 20v-1a5.5 5.5 0 0 1 5.5-5.5h3A5.5 5.5 0 0 1 16 19v1"/><circle cx="17" cy="9" r="2.5"/><path d="M18 14a4 4 0 0 1 4 4v1"/></svg> Members
+        </a>
+    </nav>
+</aside>
+</body>
+</html>

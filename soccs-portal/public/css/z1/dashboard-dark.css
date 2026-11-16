@@ -1,0 +1,75 @@
+
+body.dark-theme {
+    --bg: #1a1025;
+    --card: #241832;
+    --text: #f0e9ff;
+    --muted: #a89cc0;
+    --primary: #ff4fd8;
+    --primary-2: #a855f7;
+    --gradient: linear-gradient(90deg, var(--primary-2), var(--primary));
+    --sidebar-bg: linear-gradient(180deg, #2a1a3d 0%, #3d1f35 100%);
+    --shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    --card-glow: 0 8px 30px rgba(255, 79, 216, 0.15), 0 8px 25px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-theme .header {
+    background: var(--card);
+}
+
+body.dark-theme .search,
+body.dark-theme .icon-btn {
+    background: #3a2a4f;
+    color: var(--text);
+}
+
+body.dark-theme .header-user {
+    border-left-color: #4a3a5f;
+}
+
+body.dark-theme .user-avatar {
+    background: #3a2a4f;
+}
+
+body.dark-theme .sidebar .nav-icon,
+body.dark-theme .header .icon-btn img,
+body.dark-theme .header-user .user-avatar img,
+body.dark-theme .profile-info .user-avatar {
+    filter: brightness(0) invert(1);
+}
+
+body.dark-theme .side-nav a:hover,
+body.dark-theme .side-nav button:hover,
+body.dark-theme .logout-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .profile-menu a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .donut-ring {
+    background: conic-gradient(
+        var(--primary) calc(var(--value) * 1%),
+        #3a2a4f 0
+    );
+}
+
+body.dark-theme .day:hover {
+    background-color: #3a2a4f;
+}
+
+body.dark-theme .day.selected {
+    color: #1a1025;
+}
+
+body.dark-theme .task-card p {
+    color: #c4b5d9;
+}
+
+body.dark-theme .task-card p {
+    color: #c4b5d9; /* Makes the text light purple instead of dark gray */
+}
+
+body.dark-theme .day:hover {
+    background-color: #3a2a4f; /* Darker hover for calendar days */
+}

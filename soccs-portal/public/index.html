@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOCCS Portal — Log in</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page ready">
+<div class="ambient"></div>
+
+<!-- The UI keeps its original proportions while the background fills the window. -->
+<div class="stage"><div class="frame">
+
+  <!-- ── Header bar ── -->
+  <header class="login-header">
+    <div class="login-brand">
+      <img src="assets/logo.png" alt="SOCCS emblem">
+      <span>Student Organization of the College<br>of Computer Studies(SOCCS)</span>
+    </div>
+    <nav class="login-nav">
+      <button class="nav-link nav-cell n1" data-modal="about">About</button>
+      <button class="nav-link nav-cell n2" data-modal="features">Features</button>
+      <button class="nav-link nav-cell n3" data-modal="contact">Contact</button>
+    </nav>
+  </header>
+
+  <!-- ── Title ── -->
+  <p class="welcome">WELCOME TO</p>
+  <h1 class="portal-title grad-text">SOCCS PORTAL</h1>
+  <span class="title-rule r1"></span>
+  <span class="title-rule r2"></span>
+
+  <!-- ── Login form ── -->
+  <form id="login" class="login-form" autocomplete="on" novalidate>
+    <label class="pill">
+      <span class="sr-only">Email address</span>
+      <input id="email" type="email" placeholder="gmail" required autocomplete="username">
+    </label>
+
+    <label class="pill has-icon">
+      <span class="sr-only">Password</span>
+      <img src="assets/privacy and security.png" alt="">
+      <input id="password" type="password" placeholder="Password" required autocomplete="current-password">
+    </label>
+
+    <button type="button" id="goForgot" class="forgot">Forgot Password?</button>
+
+    <div class="login-row">
+      <button type="button" class="g-btn" disabled aria-disabled="true" title="Google sign-in is not enabled" aria-label="Google sign-in (not enabled)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#111" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
+      </button>
+      <button type="submit" class="login-btn">Login</button>
+    </div>
+
+    <p id="err" class="login-err" role="alert"></p>
+
+    <p class="login-foot">
+      No account yet?
+      <button type="button" id="goRegister" class="link-btn">Create Account</button>
+    </p>
+  </form>
+
+</div>
+
+<!-- ── Landing windows (About / Features / Contact / Create Account / Forgot Password) ── -->
+  <div id="landingOverlay" class="overlay" role="dialog" aria-modal="true">
+    <div class="fm">
+      <div class="fm-head">
+        <img src="assets/logo.png" alt="" class="logo">
+        <span class="org">Student Organization of the College of Computer Studies(SOCCS)</span>
+        <button id="lModalClose" class="fm-close" aria-label="Close"><img src="assets/ekis.png" alt="Close"></button>
+      </div>
+      <div class="fm-body">
+        <h2 id="lModalTitle" class="fm-title grad-text"></h2>
+        <div id="lModalBody" class="fm-content"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/login.js"></script>
+</body>
+</html>
